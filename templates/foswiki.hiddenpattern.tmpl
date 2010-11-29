@@ -1,0 +1,104 @@
+%TMPL:INCLUDE{"foswiki"}%%{
+---------------------------------------------------
+}%%TMPL:DEF{togglesidebar}%<div id="patternToggleSidebar">%JQREQUIRE{"cookie"}%%ADDTOZONE{"script" id="patternToggleSidebar" text="<script>
+patternToggleSidebar = function() {
+    //by the by, i'm not display:none the patternSideBar, as that will cause the height of the browser page to change, which is also ugly.
+    if ($.cookie('patternSidebar')) {
+        $.cookie('patternSidebar', null, {path: '%SCRIPTURLPATH%'});   //remove it - if the cookie is there, we should hide the sidebar by default..
+        $('#patternToggleSidebar').removeClass('hiddenSideBar');
+        $('#patternOuter').removeClass('hiddenSideBar');
+    } else { 
+        $.cookie('patternSidebar', 'hide', {path: '%SCRIPTURLPATH%'});
+        $('#patternToggleSidebar').addClass('hiddenSideBar');
+        $('#patternOuter').addClass('hiddenSideBar');
+    }
+    return 1;
+};
+patternOpenSidebarTemporary = function() {
+    if ($('#patternOuter').hasClass('hiddenSideBar') &&
+            ($.cookie('patternSidebar'))) {
+        $('#patternOuter').removeClass('hiddenSideBar');
+    }
+    return 1;
+};
+patternCloseSidebarTemporary = function() {
+    if ((! $('#patternOuter').hasClass('hiddenSideBar')) && 
+            ($.cookie('patternSidebar'))) {
+        $('#patternOuter').addClass('hiddenSideBar');
+    }
+    return 1;
+};
+$(function() {
+    //if the sideBar width is set in the cookie, then we're persisting that the sidebar should be hidden..
+    if ($.cookie('patternSidebar')) {
+        $('#patternOuter').toggleClass('hiddenSideBar');
+        $('#patternToggleSidebar').toggleClass('hiddenSideBar');
+    }
+    $('#patternSideBar')  
+        .livequery('mouseover', function(event) { 
+           patternOpenSidebarTemporary(); 
+            $('#patternSideBar')  
+                .livequery('mouseout', function(event) {  
+                    patternCloseSidebarTemporary();  
+                }); 
+        }); 
+
+    //TODO: yes, I'm flickering, I'm sure someone that knows more about this can stop it..
+    //I'm flickering to avoid the sidebar from flickering into view (or the main topic area visibly moving aside..
+    $('.patternViewPage').css('display', 'block');
+});
+</script>
+<style>
+.patternViewPage {
+    display:none;
+}
+#patternOuter.hiddenSideBar {
+    margin-left: 3px;
+}
+#patternSideBar.hiddenSideBar {
+    border-left: 3px solid %WEBBGCOLOR%;
+    over-flow: hidden;
+}
+#patternToggleSidebar { 
+background: %WEBBGCOLOR% url(%ICONURL{arrowleft}%) no-repeat;
+left:0;
+padding-left:20px;
+padding-right:2px;
+position:absolute;
+top:57px;
+z-index:99999;
+width: 220px;
+}
+#patternToggleSidebar.hiddenSideBar { 
+    width: 90px;
+    height: 20px;
+    overflow: hidden;
+    background: %WEBBGCOLOR% url(%ICONURL{arrowright}%) no-repeat;
+}
+#patternToggleSidebar.hiddenSideBar a { 
+    padding-left: 30px;
+}
+</style>"}%
+<div href="#" onclick="patternToggleSidebar()" onmouseover="patternOpenSidebarTemporary()" alt="toggle the side bar">toggle sidebar</div>
+</div>%TMPL:END%
+
+%TMPL:DEF{"main"}%<div class="foswikiPage"><div id="patternScreen">
+<div id="patternPageShadow">%TMPL:P{"metanavigation"}%
+<div id="patternPage">
+%TMPL:P{"startsidebarwrapper"}%<div id="patternOuter">
+<div id="patternFloatWrap">
+<div id="patternMain">%TMPL:P{togglesidebar}%%TMPL:P{"topbarspacer"}%%TMPL:P{"horizontalnavigation"}%
+<div id="patternMainContents">%TMPL:P{"logo"}%%TMPL:P{"patterntopiccontents"}%
+</div>
+</div>%TMPL:P{"sidebar"}%
+</div>
+<div class="clear">&nbsp;</div>
+</div>%TMPL:P{"endsidebarwrapper"}%%TMPL:P{"topbar"}%%TMPL:P{"bottombar"}%
+</div>
+</div>
+</div>
+</div>%TMPL:END%
+
+%TMPL:DEF{"bodyend"}%</body></html>%TMPL:END%
+
+%TMPL:DEF{"textareabuttons"}%<span class="foswikiRight foswikiMakeVisible" style="text-align:left; margin:0 0 0 1em;"><span class="foswikiLeft patternTextareaButton patternButtonFontSelector" title="%MAKETEXT{"Switch to monotype or propotional font"}%">&nbsp;</span><span class="foswikiLeft patternTextareaButton patternButtonEnlarge" title="%MAKETEXT{"Enlarge edit box"}%">&nbsp;</span><span class="foswikiLeft patternTextareaButton patternButtonShrink" title="%MAKETEXT{"Shrink edit box"}%">&nbsp;</span></span>%TMPL:END%
