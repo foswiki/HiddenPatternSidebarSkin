@@ -1,6 +1,6 @@
 %TMPL:INCLUDE{"foswiki"}%%{
 ---------------------------------------------------
-}%%TMPL:DEF{togglesidebar}%<div id="patternToggleSidebar">%JQREQUIRE{"cookie"}%%ADDTOZONE{"script" id="patternToggleSidebar" text="<script>
+}%%TMPL:DEF{togglesidebar}%<div id="patternToggleSidebar" >%JQREQUIRE{"cookie"}%%ADDTOZONE{"script" id="patternToggleSidebar" text="<script>
 patternToggleSidebar = function() {
     //by the by, i'm not display:none the patternSideBar, as that will cause the height of the browser page to change, which is also ugly.
     if ($.cookie('patternSidebar')) {
@@ -49,8 +49,11 @@ $(function() {
 });
 </script>
 <style>
-.patternViewPage {
-    display:none;
+.patternNoViewPage .foswikiTopic {
+    margin-top: 0;
+}
+.patternViewPage #patternToggleSidebar {
+   display: inline;
 }
 #patternOuter.hiddenSideBar {
     margin-left: 3px;
@@ -58,6 +61,9 @@ $(function() {
 #patternSideBar.hiddenSideBar {
     border-left: 3px solid %WEBBGCOLOR%;
     over-flow: hidden;
+}
+.patternNoViewPage  #patternToggleSidebar {
+  display: none;
 }
 #patternToggleSidebar { 
 background: %WEBBGCOLOR% url(%ICONURL{arrowleft}%) no-repeat;
@@ -68,6 +74,7 @@ position:absolute;
 top:57px;
 z-index:99999;
 width: 220px;
+top:35px;
 }
 #patternToggleSidebar.hiddenSideBar { 
     width: 90px;
@@ -78,8 +85,41 @@ width: 220px;
 #patternToggleSidebar.hiddenSideBar a { 
     padding-left: 30px;
 }
+.patternTopicActions  {
+    bottom: 0;
+    left: 0;
+    clear: both;
+    right: 0;
+    width: 100%;
+    text-align: center;
+    padding: 3px 20px;
+
+    border-top: 2px solid #355A9B;
+    bottom: 0;
+    clear: both;
+    color: #FFFFFF;
+    Afont-size: 80%;
+    height: 24px;
+    margin: 0;
+    min-height: 24px;
+    Apadding: 0 80px;
+    position: fixed;
+    Atext-align: center;
+    Awidth: 100%;
+}
+#patternTopBar,
+#patternClearHeaderCenter,
+#patternClearHeaderLeft,
+#patternClearHeaderRight,
+#patternTopBarContents {
+   height:35px; /* top bar height; make room for header columns */
+   overflow:hidden;
+}
+#patternTopBarContents {
+    padding-top: 2px;
+}
 </style>"}%
-<div href="#" onclick="patternToggleSidebar()" onmouseover="patternOpenSidebarTemporary()" alt="toggle the side bar">toggle sidebar</div>
+<div href="#" onclick="patternToggleSidebar()" onmouseover="patternOpenSidebarTemporary()" alt="toggle the side bar" >toggle sidebar</div>
 </div>%TMPL:END%
 
 %TMPL:DEF{"main"}%<div class="foswikiPage"><div id="patternScreen">
@@ -87,7 +127,9 @@ width: 220px;
 <div id="patternPage">
 %TMPL:P{"startsidebarwrapper"}%<div id="patternOuter">
 <div id="patternFloatWrap">
-<div id="patternMain">%TMPL:P{togglesidebar}%%TMPL:P{"topbarspacer"}%%TMPL:P{"horizontalnavigation"}%
+<div id="patternMain" class="">
+%TMPL:P{togglesidebar}%
+%TMPL:P{"topbarspacer"}%%TMPL:P{"horizontalnavigation"}%
 <div id="patternMainContents">%TMPL:P{"logo"}%%TMPL:P{"patterntopiccontents"}%
 </div>
 </div>%TMPL:P{"sidebar"}%
