@@ -19,7 +19,7 @@ use strict;
 # *must* exist in this package. This should always be in the format
 # $Rev: 3193 $ so that Foswiki can determine the checked-in status of the
 # extension.
-our $VERSION = '$Rev$';    # version of *this file*.
+our $VERSION = '$Rev$'; # version of *this file*.
 
 # $RELEASE is used in the "Find More Extensions" automation in configure.
 # It is a manually maintained string used to identify functionality steps.
@@ -33,6 +33,5 @@ our $VERSION = '$Rev$';    # version of *this file*.
 # topic - if you use %$RELEASE% with BuildContrib this is done automatically.
 our $RELEASE = '1.0';
 
-our $SHORTDESCRIPTION =
-  'allow the user to hide and auto-hide the PatternSkin sidebar';
+our $SHORTDESCRIPTION = 'allow the user to hide and auto-hide the PatternSkin sidebar';
 
